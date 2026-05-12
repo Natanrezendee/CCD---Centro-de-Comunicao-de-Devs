@@ -68,3 +68,18 @@ Atualmente os dados são armazenados utilizando LocalStorage do navegador.
 - Multiusuário;
 - Histórico de atividades;
 - Melhorias visuais e organizacionais.
+
+
+## Interface da Aplicação
+
+### Feed Geral
+![Feed Geral](img/download.png)
+
+### Organização de Tarefas
+![Tarefas](img/download%20(1).png)
+
+### Reports
+![Reports](img/download%20(2).png)
+
+### Relatórios
+![Relatórios](img/download%20(3).png)
