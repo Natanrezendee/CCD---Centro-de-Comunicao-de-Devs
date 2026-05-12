@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CCD - Centro de Comunicação de Devs</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="index.css" />
+</head>
+
+<body>
+
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+            <span class="brand-icon">⬡</span>
+            <span class="brand-name">CCD - Centro de Comunicação de Devs</span>
+        </div>
+
+        <div class="user-switcher">
+            <label class="input-label">Dev Atual:</label>
+
+            <div class="user-tabs" id="userTabs"></div>
+
+            <button class="btn-add-user" id="btnAddUser">
+                + novo dev
+            </button>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <button class="nav-item active" data-view="feed">
+                <span class="nav-icon">◈</span>
+                Feed Geral
+                <span class="badge" id="badgeFeed"></span>
+            </button>
+
+            <button class="nav-item" data-view="tasks">
+                <span class="nav-icon">◧</span>
+                Tarefas
+                <span class="badge" id="badgeTasks"></span>
+            </button>
+
+            <button class="nav-item" data-view="reports">
+                <span class="nav-icon">◫</span>
+                Reports
+            </button>
+
+            <button class="nav-item" data-view="standup">
+                <span class="nav-icon">◩</span>
+                Relatórios
+            </button>
+
+        </nav>
+
+        <div class="online-devs">
+            <div class="section-label">DEVS ONLINE</div>
+            <div id="devsList"></div>
+        </div>
+
+    </aside>
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div class="topbar-left">
+                <h1 class="view-title" id="viewTitle">Feed Geral</h1>
+                <span class="view-sub" id="viewSub">
+                    todas as atualizações
+                </span>
+            </div>
+
+            <div class="topbar-right">
+                <div class="clock" id="clock"></div>
+
+                <button class="btn-primary" id="btnNewPost">
+                    + Postar
+                </button>
+            </div>
+
+        </header>
+
+        <section class="view active" id="view-feed">
+
+            <div class="filter-bar">
+
+                <button class="filter-btn active" data-filter="all">
+                    Tudo
+                </button>
+
+                <button class="filter-btn" data-filter="task">
+                    Tarefas
+                </button>
+
+                <button class="filter-btn" data-filter="report">
+                    Reports
+                </button>
+
+                <button class="filter-btn" data-filter="message">
+                    Mensagens
+                </button>
+
+                <button class="filter-btn" data-filter="standup">
+                    Relatórios
+                </button>
+
+            </div>
+
+            <div class="posts-list" id="feedList"></div>
+
+        </section>
+
+        <section class="view" id="view-tasks">
+            <div class="task-columns" id="taskColumns"></div>
+        </section>
+
+        <section class="view" id="view-reports">
+            <div class="posts-list" id="reportsList"></div>
+        </section>
+
+        <section class="view" id="view-standup">
+            <div class="standup-grid" id="standupGrid"></div>
+        </section>
+
+    </main>
+
+    <div class="modal-overlay" id="modalOverlay">
+
+        <div class="modal">
+
+            <div class="modal-header">
+                <span id="modalTitle">Nova Postagem</span>
+
+                <button class="modal-close" id="modalClose">
+                    ✕
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="field-group">
+
+                    <label class="input-label">Tipo</label>
+
+                    <div class="type-selector" id="typeSelector">
+
+                        <button class="type-btn active" data-type="message">
+                            💬 Mensagem
+                        </button>
+
+                        <button class="type-btn" data-type="task">
+                            📋 Tarefa
+                        </button>
+
+                        <button class="type-btn" data-type="report">
+                            📊 Report
+                        </button>
+
+                        <button class="type-btn" data-type="standup">
+                            📝 Relatório
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="field-group" id="fieldTitle">
+
+                    <label class="input-label">Título</label>
+
+                    <input class="input" type="text" id="inputTitle" placeholder="Título da postagem..." />
+
+                </div>
+
+                <div class="field-group" id="fieldContent">
+
+                    <label class="input-label">Conteúdo</label>
+
+                    <textarea class="input textarea" id="inputContent" placeholder="Escreve aqui..."></textarea>
+
+                </div>
+
+                <div id="extraTask" class="extra-fields hidden">
+
+                    <div class="field-row">
+
+                        <div class="field-group">
+
+                            <label class="input-label">Prioridade</label>
+
+                            <select class="input" id="inputPriority">
+                                <option value="low">Baixa</option>
+                                <option value="medium" selected>Média</option>
+                                <option value="high">Alta</option>
+                                <option value="critical">Crítica 🔥</option>
+                            </select>
+
+                        </div>
+
+                        <div class="field-group">
+
+                            <label class="input-label">Atribuir para</label>
+
+                            <select class="input" id="inputAssignee">
+                                <option value="">— ninguém —</option>
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div id="extraStandup" class="extra-fields hidden">
+
+                    <div class="field-group">
+
+                        <label class="input-label">O que fiz hoje</label>
+
+                        <textarea class="input textarea small" id="inputToday"
+                            placeholder="Descreve o que você fez hoje..."></textarea>
+
+                    </div>
+
+                    <div class="field-group">
+
+                        <label class="input-label">Problemas / Blockers</label>
+
+                        <textarea class="input textarea small" id="inputBlockers"
+                            placeholder="Algum problema ou blocker? (opcional)"></textarea>
+
+                    </div>
+
+                </div>
+
+                <div class="field-group">
+
+                    <label class="input-label">Mencionar devs</label>
+
+                    <div class="mentions-list" id="mentionsList"></div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button class="btn-ghost" id="btnCancel">
+                    Cancelar
+                </button>
+
+                <button class="btn-primary" id="btnSubmit">
+                    Publicar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-overlay" id="modalUserOverlay">
+
+        <div class="modal small-modal">
+
+            <div class="modal-header">
+
+                <span>Adicionar Dev</span>
+
+                <button class="modal-close" id="modalUserClose">
+                    ✕
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="field-group">
+
+                    <label class="input-label">Nome do dev</label>
+
+                    <input class="input" type="text" id="inputNewUser" placeholder="ex: Lucas, Ana, Mateus..." />
+
+                </div>
+
+                <div class="field-group">
+
+                    <label class="input-label">Cor</label>
+
+                    <div class="color-picker" id="colorPicker"></div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button class="btn-ghost" id="btnCancelUser">
+                    Cancelar
+                </button>
+
+                <button class="btn-primary" id="btnAddUserConfirm">
+                    Adicionar
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="app.js"></script>
+
+</body>
